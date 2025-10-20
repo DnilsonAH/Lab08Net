@@ -1,0 +1,6 @@
+@Lab08_LINQ_HostAddress = http://localhost:5255
+
+GET {{Lab08_LINQ_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
