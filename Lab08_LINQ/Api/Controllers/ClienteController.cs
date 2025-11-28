@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lab08_LINQ.Api.Controllers;
 
-[Route("api/Clientes")]
+[Route("api/[controller]")]
 [ApiController]
 public class ClienteController : ControllerBase
 {
@@ -31,6 +31,22 @@ public class ClienteController : ControllerBase
         {
             return NotFound($"No se encontraron clientes que hayan comprado el producto con ID {productoId}.");
         }
+        return Ok(clientes);
+    }
+    
+    // --- NUEVOS ENDPOINTS DEL LABORATORIO ---
+
+    [HttpGet("con-ordenes")]
+    public async Task<IActionResult> GetClientesConOrdenes()
+    {
+        var clientes = await _clienteService.GetClientesConOrdenesAsync();
+        return Ok(clientes);
+    }
+
+    [HttpGet("con-total-productos")]
+    public async Task<IActionResult> GetClientesConTotalProductos()
+    {
+        var clientes = await _clienteService.GetClientesConTotalProductosAsync();
         return Ok(clientes);
     }
 }

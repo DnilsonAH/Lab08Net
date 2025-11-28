@@ -16,4 +16,8 @@ public interface IOrdenesService : IGenericService<OrdeneDto>
     Task<IEnumerable<OrdenDetalleDto>> GetTodosLosDetallesDeOrdenesAsync();
     // Ejercicio 11
     Task<IEnumerable<ProductoDto>> GetProductosPorClienteAsync(int clienteId);
+    
+
+    Task<IEnumerable<OrdenConDetallesDto>> GetOrdenesConDetallesAsync();
+    Task<IEnumerable<ClienteVentasDto>> GetVentasPorClienteAsync();
 }

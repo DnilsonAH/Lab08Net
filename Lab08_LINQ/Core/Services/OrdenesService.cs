@@ -8,6 +8,7 @@ namespace Lab08_LINQ.Core.Services;
 
 public class OrdenesService : GenericService<Ordene, OrdeneDto>, IOrdenesService
 {
+    // Sobrescribimos _ordenesRepository para acceder a métodos específicos
     private readonly IOrdenesRepository _ordenesRepository;
 
     public OrdenesService(IOrdenesRepository repository, IMapper mapper)
@@ -45,5 +46,18 @@ public class OrdenesService : GenericService<Ordene, OrdeneDto>, IOrdenesService
     {
         var productos = await _ordenesRepository.GetProductosPorClienteAsync(clienteId);
         return _mapper.Map<IEnumerable<ProductoDto>>(productos);
+    }
+    
+    // --- IMPLEMENTACIÓN DE NUEVOS MÉTODOS ---
+
+    public async Task<IEnumerable<OrdenConDetallesDto>> GetOrdenesConDetallesAsync()
+    {
+        var ordenes = await _ordenesRepository.GetOrdenesConDetallesAsync();
+        return _mapper.Map<IEnumerable<OrdenConDetallesDto>>(ordenes);
+    }
+
+    public async Task<IEnumerable<ClienteVentasDto>> GetVentasPorClienteAsync()
+    {
+        return await _ordenesRepository.GetVentasPorClienteAsync();
     }
 }

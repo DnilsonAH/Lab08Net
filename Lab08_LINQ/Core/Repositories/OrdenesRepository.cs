@@ -1,3 +1,4 @@
+using Lab08_LINQ.Core.DTOs;
 using Lab08_LINQ.Core.Entities;
 using Lab08_LINQ.Core.Repositories.Interfaces;
 using Lab08_LINQ.Infrastructure;
@@ -57,6 +58,32 @@ public class OrdenesRepository: GenericRepository<Ordene>, IOrdenesRepository
             .SelectMany(o => o.Detallesordens)
             .Select(d => d.Producto) 
             .Distinct() 
+            .ToListAsync();
+    }
+
+    /// 2
+    public async Task<IEnumerable<Ordene>> GetOrdenesConDetallesAsync()
+    {
+        return await _dbContext.Ordenes
+            .Include(orden => orden.Detallesordens)
+                .ThenInclude(detalle => detalle.Producto)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    /// 4
+    public async Task<IEnumerable<ClienteVentasDto>> GetVentasPorClienteAsync()
+    {
+        return await _dbContext.Ordenes
+            .AsNoTracking()
+            .GroupBy(orden => orden.ClienteId) 
+            .Select(grupo => new ClienteVentasDto
+            {
+                NombreCliente = _dbContext.Clientes.FirstOrDefault(c => c.ClienteId == grupo.Key).Nombre,
+                VentasTotales = grupo.SelectMany(orden => orden.Detallesordens)
+                                     .Sum(detalle => detalle.Cantidad * detalle.Precio)
+            })
+            .OrderByDescending(ventas => ventas.VentasTotales) 
             .ToListAsync();
     }
 }

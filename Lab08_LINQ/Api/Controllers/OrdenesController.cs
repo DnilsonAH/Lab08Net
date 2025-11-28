@@ -65,4 +65,20 @@ public class OrdenesController : ControllerBase
         }
         return Ok(productos);
     }
+    
+    // --- NUEVOS ENDPOINTS DEL LABORATORIO ---
+    
+    [HttpGet("con-detalles")]
+    public async Task<IActionResult> GetOrdenesConDetalles()
+    {
+        var ordenes = await _ordenesService.GetOrdenesConDetallesAsync();
+        return Ok(ordenes);
+    }
+
+    [HttpGet("ventas-por-cliente")]
+    public async Task<IActionResult> GetVentasPorCliente()
+    {
+        var ventas = await _ordenesService.GetVentasPorClienteAsync();
+        return Ok(ventas);
+    }
 }

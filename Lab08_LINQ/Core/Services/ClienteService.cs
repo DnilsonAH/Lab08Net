@@ -8,9 +8,12 @@ namespace Lab08_LINQ.Core.Services;
 
 public class ClienteService: GenericService<Cliente, ClienteDto>, IClienteService
 {
-    protected readonly IClientesRepository _clienteRepository;
+    // Sobrescribimos _clienteRepository para poder acceder a los métodos específicos de IClientesRepository
+    private readonly IClientesRepository _clienteRepository;
+    
     public ClienteService(IClientesRepository repository, IMapper mapper) : base(repository , mapper)
     {
+        // Asignamos el repositorio específico
         _clienteRepository = repository;
     }
     //1. método GetClientesConZAsync
@@ -26,5 +29,18 @@ public class ClienteService: GenericService<Cliente, ClienteDto>, IClienteServic
     {
         var clientes = await _clienteRepository.GetClientesPorProductoAsync(productoId);
         return _mapper.Map<IEnumerable<ClienteDto>>(clientes);
+    }
+    
+    // --- IMPLEMENTACIÓN DE NUEVOS MÉTODOS ---
+
+    public async Task<IEnumerable<ClienteOrdenDto>> GetClientesConOrdenesAsync()
+    {
+        var clientes = await _clienteRepository.GetClientesConOrdenesAsync();
+        return _mapper.Map<IEnumerable<ClienteOrdenDto>>(clientes);
+    }
+
+    public async Task<IEnumerable<ClienteProductoCountDto>> GetClientesConTotalProductosAsync()
+    {
+        return await _clienteRepository.GetClientesConTotalProductosAsync();
     }
 }

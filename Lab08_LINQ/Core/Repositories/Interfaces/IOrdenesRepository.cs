@@ -1,3 +1,4 @@
+using Lab08_LINQ.Core.DTOs;
 using Lab08_LINQ.Core.Entities;
 
 namespace Lab08_LINQ.Core.Repositories.Interfaces;
@@ -16,4 +17,11 @@ public interface IOrdenesRepository: IGenericRepository<Ordene>
 
     // Ejercicio 11:
     Task<IEnumerable<Producto>> GetProductosPorClienteAsync(int clienteId);
+    
+    
+    // 2
+    Task<IEnumerable<Ordene>> GetOrdenesConDetallesAsync();
+
+    // 4
+    Task<IEnumerable<ClienteVentasDto>> GetVentasPorClienteAsync();
 }

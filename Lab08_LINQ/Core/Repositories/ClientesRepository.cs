@@ -1,3 +1,4 @@
+using Lab08_LINQ.Core.DTOs;
 using Lab08_LINQ.Core.Entities;
 using Lab08_LINQ.Core.Repositories.Interfaces;
 using Lab08_LINQ.Infrastructure;
@@ -30,5 +31,28 @@ public class ClientesRepository: GenericRepository<Cliente>, IClientesRepository
             .Distinct()   
             .ToListAsync();
     }
-    
+
+    /// 1
+    public async Task<IEnumerable<Cliente>> GetClientesConOrdenesAsync()
+    {
+        return await _dbContext.Clientes
+            .AsNoTracking() 
+            .Include(cliente => cliente.Ordenes)
+            .ToListAsync();
+    }
+
+    /// 3
+    public async Task<IEnumerable<ClienteProductoCountDto>> GetClientesConTotalProductosAsync()
+    {
+        return await _dbContext.Clientes
+            .AsNoTracking()
+            .Select(cliente => new ClienteProductoCountDto
+            {
+                NombreCliente = cliente.Nombre,
+                TotalProductos = cliente.Ordenes
+                    .SelectMany(orden => orden.Detallesordens) 
+                    .Sum(detalle => detalle.Cantidad) 
+            })
+            .ToListAsync();
+    }
 }

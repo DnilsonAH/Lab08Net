@@ -39,8 +39,28 @@ public class AutoMapping : Profile
         //Detalles Orden
         CreateMap<Detallesorden, DetallesOrdenDto>(); // Entidad -> DTO
         
-        // Mapeo personalizado para OrdenDetalleDto
+        // OrdenDetalleDto
         CreateMap<Detallesorden, OrdenDetalleDto>()
             .ForMember(dest => dest.NombreProducto, opt => opt.MapFrom(src => src.Producto.Nombre)); // Entidad -> DTO
+            
+        // --- NUEVOS MAPEOS DEL LABORATORIO ---
+        
+
+        // ClienteOrdenDto Entity -> DTO
+        CreateMap<Cliente, ClienteOrdenDto>()
+            .ForMember(dest => dest.NombreCliente, opt => opt.MapFrom(src => src.Nombre))
+            .ForMember(dest => dest.Ordenes, opt => opt.MapFrom(src => src.Ordenes));
+        
+        // OrdenSimpleDto Entity -> DTO
+        CreateMap<Ordene, OrdenSimpleDto>();
+
+        // OrdenConDetallesDto Entity -> DTO
+        CreateMap<Ordene, OrdenConDetallesDto>()
+            .ForMember(dest => dest.Productos, opt => opt.MapFrom(src => src.Detallesordens));
+
+        // ProductoDetalleDto Entity -> DTO
+        CreateMap<Detallesorden, ProductoDetalleDto>()
+            .ForMember(dest => dest.NombreProducto, opt => opt.MapFrom(src => src.Producto.Nombre))
+            .ForMember(dest => dest.Precio, opt => opt.MapFrom(src => src.Precio));
     }
 }

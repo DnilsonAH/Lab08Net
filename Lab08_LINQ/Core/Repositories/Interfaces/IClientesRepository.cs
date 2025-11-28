@@ -1,3 +1,4 @@
+using Lab08_LINQ.Core.DTOs;
 using Lab08_LINQ.Core.Entities;
 
 namespace Lab08_LINQ.Core.Repositories.Interfaces;
@@ -9,4 +10,10 @@ public interface IClientesRepository: IGenericRepository<Cliente>
     
     // Ejercicio 12: Clientes que compraron un producto específico
     Task<IEnumerable<Cliente>> GetClientesPorProductoAsync(int productoId);
+    
+    // 1
+    Task<IEnumerable<Cliente>> GetClientesConOrdenesAsync();
+    
+    // 3
+    Task<IEnumerable<ClienteProductoCountDto>> GetClientesConTotalProductosAsync();
 }
